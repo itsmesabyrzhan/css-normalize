@@ -83,7 +83,6 @@ p:where(:not([class]):not(:last-child)) {
   margin-bottom: var(--paragraphMarginBottom);
 }
 
-
 /**
   Упрощаем работу с изображениями и видео
  */
@@ -115,10 +114,6 @@ html {
     при появлении / исчезновении скроллбара
    */
   scrollbar-gutter: stable;
-  /**
-    Плавный скролл
-   */
-  scroll-behavior: smooth;
 }
 
 body {
@@ -131,6 +126,16 @@ body {
     Унифицированный интерлиньяж
    */
   line-height: 1.5;
+}
+
+/**
+  Плавный скролл только для пользователей,
+  которые не отключили анимации
+ */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
 /**
@@ -149,10 +154,38 @@ label {
 }
 
 /**
-  Убирает серую подсветку при тапе на мобильных устройствах (iOS/Android)
+  Убираем стандартные стили кнопок
  */
-button {
+button,
+input:where([type="button"], [type="submit"], [type="reset"]) {
   -webkit-tap-highlight-color: transparent;
+  -webkit-appearance: none;
+  appearance: none;
+  background-color: transparent;
+  border: none;
+}
+
+/**
+  Убираем стрелки у input type="number"
+ */
+input:where([type="number"]) {
+  -moz-appearance: textfield;
+}
+
+input:where([type="number"])::-webkit-inner-spin-button,
+input:where([type="number"])::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/**
+  Убираем крестик очистки у input type="search"
+ */
+input:where([type="search"])::-webkit-search-decoration,
+input:where([type="search"])::-webkit-search-cancel-button,
+input:where([type="search"])::-webkit-search-results-button,
+input:where([type="search"])::-webkit-search-results-decoration {
+  -webkit-appearance: none;
 }
 
 /**
@@ -160,7 +193,7 @@ button {
   (за исключением тех, у которых уже указан
   атрибут fill со значением 'none' или начинается с 'url')
  */
-:where([fill]:not(
+:where(svg [fill]:not(
   [fill="none"],
   [fill^="url"]
 )) {
@@ -172,7 +205,7 @@ button {
   (за исключением тех, у которых уже указан
   атрибут stroke со значением 'none')
  */
-:where([stroke]:not(
+:where(svg [stroke]:not(
   [stroke="none"],
   [stroke^="url"]
 )) {
@@ -191,7 +224,34 @@ svg * {
  */
 :where(table) {
   border-collapse: collapse;
+  border-spacing: 0;
   border-color: currentColor;
+}
+
+/**
+  Убираем отступы у ячеек таблицы с классом
+ */
+:where(th, td):where([class]) {
+  padding: 0;
+}
+
+/**
+  Делаем textarea не растягиваемым по горизонтали
+ */
+textarea {
+  resize: vertical;
+}
+
+/**
+  Нормализация summary для details
+ */
+summary {
+  cursor: pointer;
+  list-style: none;
+}
+
+summary::-webkit-details-marker {
+  display: none;
 }
 
 /**
